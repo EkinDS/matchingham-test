@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a03aebd90d035ab449d797996c7e3feb, type: 3}
+  m_Name: MatchGameData
+  m_EditorClassIdentifier: 
+  levelDataList:
+  - backgroundSprite: {fileID: 21300000, guid: 84d017d2e6dce954da854a5ee09dd3ca, type: 3}
+    matchlingPlacementDataList:
+    - matchlingType: 1
+      MatchlingPlacementList:
+      - position: {x: 100, y: 0}
+        size: 100
+        order: 0
+      - position: {x: 0, y: 0}
+        size: 100
+        order: 1
+      - position: {x: 200, y: 0}
+        size: 100
+        order: 2
+    - matchlingType: 2
+      MatchlingPlacementList:
+      - position: {x: 100, y: 333}
+        size: 100
+        order: 3
+      - position: {x: 0, y: 222}
+        size: 100
+        order: 4
+      - position: {x: 200, y: 111}
+        size: 100
+        order: 5
+    - matchlingType: 3
+      MatchlingPlacementList:
+      - position: {x: 555, y: 333}
+        size: 100
+        order: 6
+      - position: {x: 555, y: 222}
+        size: 100
+        order: 7
+      - position: {x: 555, y: 111}
+        size: 100
+        order: 8
+  matchlingDataList:
+  - matchlingType: 1
+    sprite: {fileID: 21300000, guid: 8d6cbb612b3aada4d9856c317419a8fa, type: 3}
+  - matchlingType: 2
+    sprite: {fileID: 21300000, guid: b37f54633377a3343b4449e30e97651e, type: 3}
+  - matchlingType: 3
+    sprite: {fileID: 21300000, guid: 417dd2ad49e9e0d42a59dccf8f359fe2, type: 3}
