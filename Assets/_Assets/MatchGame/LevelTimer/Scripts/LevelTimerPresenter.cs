@@ -5,7 +5,7 @@ public class LevelTimerPresenter : MonoBehaviour
     private EventBus _eventBus;
     private LevelTimerView _levelTimerView;
     private float _timeLimit;
-    private bool _iFreezed;
+    private bool _isFrozen;
 
     private void Update()
     {
@@ -21,13 +21,13 @@ public class LevelTimerPresenter : MonoBehaviour
 
     public void StartTimer(float timeLimit)
     {
-        _iFreezed = false;
+        _isFrozen = false;
         _timeLimit = timeLimit;
     }
     
     public void StopTimer()
     {
-        _iFreezed = true;
+        _isFrozen = true;
     }
 
     public float GetTimeLimit()
@@ -37,7 +37,7 @@ public class LevelTimerPresenter : MonoBehaviour
     
     private void UpdateTimer()
     {
-        if (_iFreezed)
+        if (_isFrozen)
         {
             return;
         }

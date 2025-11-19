@@ -49,6 +49,9 @@ MonoBehaviour:
       - position: {x: 555, y: 111}
         size: 100
         order: 8
+    matchGoalList:
+    - matchlingType: 1
+      count: 3
   - timeLimit: 300
     backgroundSprite: {fileID: 21300000, guid: 33f37a1690a1a804dba5dae3f474efcb, type: 3}
     matchlingPlacementDataList:
@@ -85,6 +88,11 @@ MonoBehaviour:
       - position: {x: 555, y: 111}
         size: 100
         order: 8
+    matchGoalList:
+    - matchlingType: 2
+      count: 3
+    - matchlingType: 3
+      count: 3
   matchlingDataList:
   - matchlingType: 1
     sprite: {fileID: 21300000, guid: 8d6cbb612b3aada4d9856c317419a8fa, type: 3}

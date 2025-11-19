@@ -29,6 +29,7 @@ public class LevelData
     public float timeLimit;
     public Sprite backgroundSprite;
     public List<MatchlingPlacementData> matchlingPlacementDataList;
+    public List<MatchGoal> matchGoalList;
 }
 
 [Serializable]
@@ -51,6 +52,13 @@ public class MatchlingPlacement
     public Vector2 position;
     public float size;
     public int order;
+}
+
+[Serializable]
+public class MatchGoal
+{
+    public MatchlingType matchlingType;
+    public int count;
 }
 
 public enum MatchlingType

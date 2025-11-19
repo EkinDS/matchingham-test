@@ -12,6 +12,7 @@ public class MatchGameManager : MonoBehaviour
     [SerializeField] private LevelCompletedView _levelCompletedView;
     [SerializeField] private LevelFailedView _levelFailedView;
     [SerializeField] private LevelTimerPresenter _levelTimerPresenter;
+    [SerializeField] private MatchGoalCheckerPresenter _matchGoalCheckerPresenter;
 
     private EventBus _eventBus;
     private List<MatchlingPresenter> _matchlingPresenters;
@@ -22,39 +23,47 @@ public class MatchGameManager : MonoBehaviour
         _eventBusManager.Initialize();
         _eventBus = _eventBusManager.EventBus;
 
+        _collectionPresenter.Initialize(_eventBus);
+        _levelCompletedView.Initialize(_eventBus);
+        _levelFailedView.Initialize(_eventBus);
+        _levelTimerPresenter.Initialize(_eventBus);
+        _matchGoalCheckerPresenter.Initialize(_eventBus);
+        _background.Initialize();
+
         _eventBus.Subscribe<MatchlingMatchedEvent>(HandleOnMatchlingMatched);
         _eventBus.Subscribe<NextLevelRequestedEvent>(HandleOnNextLevelRequested);
         _eventBus.Subscribe<CollectionFilledEvent>(HandleOnCollectionFilledEvent);
         _eventBus.Subscribe<AllMatchlingsMatchedEvent>(HandleOnAllMatchlingsMatchedEvent);
         _eventBus.Subscribe<TimeRanOutEvent>(HandleOnTimeRanOutEvent);
 
-        int currentLevelId = PlayerPrefs.GetInt("CurrentLevelId", 0);
-
-        StartLevel(currentLevelId);
+        ResetGame();
+        LoadGame();
     }
 
-    private void ResetLevel()
+    private void ResetGame()
     {
-        foreach (var matchlingPresenter in _matchlingPresenters)
+        if (_matchlingPresenters != null)
         {
-            Destroy(matchlingPresenter.gameObject);
+            foreach (var matchlingPresenter in _matchlingPresenters)
+            {
+                Destroy(matchlingPresenter.gameObject);
+            }
         }
-        
-    }
 
-    private void StartLevel(int levelId)
-    {
         _matchlingPresenters = new List<MatchlingPresenter>();
 
-        LevelData levelData = _matchGameData.levelDataList[levelId % _matchGameData.levelDataList.Count];
+        _collectionPresenter.ResetForLevel();
+    }
 
-        _collectionPresenter.Initialize(_eventBus);
-        _levelCompletedView.Initialize(_eventBus);
-        _levelFailedView.Initialize(_eventBus);
-        _levelTimerPresenter.Initialize(_eventBus);
+    private void LoadGame()
+    {
+        int currentLevelId = PlayerPrefs.GetInt("CurrentLevelId", 0);
+
+        LevelData levelData = _matchGameData.levelDataList[currentLevelId % _matchGameData.levelDataList.Count];
+
         _levelTimerPresenter.StartTimer(levelData.timeLimit);
 
-        _background.Initialize(levelData.backgroundSprite);
+        _background.ResetForLevel(levelData.backgroundSprite);
 
         foreach (var matchlingPlacementData in levelData.matchlingPlacementDataList)
         {
@@ -85,16 +94,14 @@ public class MatchGameManager : MonoBehaviour
 
     private void HandleOnNextLevelRequested(NextLevelRequestedEvent e)
     {
-        int currentLevelId = PlayerPrefs.GetInt("CurrentLevelId", 0);
-
-        StartLevel(currentLevelId);
+        ResetGame();
+        LoadGame();
     }
 
 
     private void HandleOnAllMatchlingsMatchedEvent(AllMatchlingsMatchedEvent e)
     {
-        int currentLevelId = PlayerPrefs.GetInt("CurrentLevelId", 0);
-        PlayerPrefs.SetInt("CurrentLevelId", currentLevelId + 1);
+        PlayerPrefs.SetInt("CurrentLevelId", PlayerPrefs.GetInt("CurrentLevelId", 0) + 1);
 
         _levelCompletedView.Appear(e.Timer);
     }

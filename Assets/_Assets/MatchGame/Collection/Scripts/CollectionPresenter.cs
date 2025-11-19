@@ -12,11 +12,15 @@ public class CollectionPresenter : MonoBehaviour
     {
         _eventBus = eventBus;
         _collectionView = GetComponent<CollectionView>();
-        _collectionModel = new CollectionModel();
 
         _eventBus.Subscribe<MatchlingSelectedEvent>(HandleMatchlingSelected);
         _eventBus.Subscribe<MatchlingDeselectedEvent>(HandleMatchlingDeselected);
         _eventBus.Subscribe<MatchlingPlacedInCollectionEvent>(HandleOnMatchlingPlacedInCollection);
+    }
+
+    public void ResetForLevel()
+    {
+        _collectionModel = new CollectionModel();
     }
 
     private void HandleMatchlingSelected(MatchlingSelectedEvent e)

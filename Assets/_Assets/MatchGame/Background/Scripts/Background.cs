@@ -24,13 +24,18 @@ public class Background : MonoBehaviour, IDragHandler
         HandleMouseScrollZoom();
     }
 
-    public void Initialize(Sprite sprite)
+    public void Initialize()
     {
         _rectTransform = GetComponent<RectTransform>();
         _canvas = GetComponentInParent<Canvas>();
         _image = GetComponent<Image>();
 
+    }
+
+    public void ResetForLevel(Sprite sprite)
+    {
         _image.sprite = sprite;
+
     }
 
     public void OnDrag(PointerEventData eventData)
