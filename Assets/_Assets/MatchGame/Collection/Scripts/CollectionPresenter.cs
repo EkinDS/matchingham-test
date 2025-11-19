@@ -24,6 +24,11 @@ public class CollectionPresenter : MonoBehaviour
         if (_collectionModel.TryToAddMatchlingToCollection(e.MatchlingPresenter))
         {
             _collectionView.RearrangeMatchlingPresenters(_collectionModel.MatchlingPresenters);
+
+            if (_collectionModel.MatchlingPresenters.Count >= 6)
+            {
+                _eventBus.Publish(new CollectionFilledEvent());
+            }
         }
     }
 

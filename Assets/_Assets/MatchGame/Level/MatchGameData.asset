@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: MatchGameData
   m_EditorClassIdentifier: 
   levelDataList:
-  - backgroundSprite: {fileID: 21300000, guid: 84d017d2e6dce954da854a5ee09dd3ca, type: 3}
+  - timeLimit: 30
+    backgroundSprite: {fileID: 21300000, guid: 84d017d2e6dce954da854a5ee09dd3ca, type: 3}
     matchlingPlacementDataList:
     - matchlingType: 1
       MatchlingPlacementList:
@@ -48,7 +49,8 @@ MonoBehaviour:
       - position: {x: 555, y: 111}
         size: 100
         order: 8
-  - backgroundSprite: {fileID: 21300000, guid: 33f37a1690a1a804dba5dae3f474efcb, type: 3}
+  - timeLimit: 300
+    backgroundSprite: {fileID: 21300000, guid: 33f37a1690a1a804dba5dae3f474efcb, type: 3}
     matchlingPlacementDataList:
     - matchlingType: 1
       MatchlingPlacementList:

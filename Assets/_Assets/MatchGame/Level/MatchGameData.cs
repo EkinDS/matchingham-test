@@ -26,6 +26,7 @@ public class MatchGameData : ScriptableObject
 [Serializable]
 public class LevelData
 {
+    public float timeLimit;
     public Sprite backgroundSprite;
     public List<MatchlingPlacementData> matchlingPlacementDataList;
 }
