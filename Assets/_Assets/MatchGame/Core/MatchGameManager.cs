@@ -32,7 +32,7 @@ public class MatchGameManager : MonoBehaviour
         _eventBus.Subscribe<MatchlingMatchedEvent>(HandleOnMatchlingMatched);
         _eventBus.Subscribe<NextLevelRequestedEvent>(HandleOnNextLevelRequested);
         _eventBus.Subscribe<CollectionFilledEvent>(HandleOnCollectionFilledEvent);
-        _eventBus.Subscribe<AllMatchlingsMatchedEvent>(HandleOnAllMatchlingsMatchedEvent);
+        _eventBus.Subscribe<AllMatchGoalsFulfilledEvent>(HandleOnAllMatchGoalsFulfilled);
         _eventBus.Subscribe<TimeRanOutEvent>(HandleOnTimeRanOutEvent);
 
         ResetGame();
@@ -82,13 +82,6 @@ public class MatchGameManager : MonoBehaviour
     private void HandleOnMatchlingMatched(MatchlingMatchedEvent e)
     {
         _matchlingPresenters.Remove(e.MatchlingPresenter);
-
-        if (_matchlingPresenters.Count == 0)
-        {
-            _levelTimerPresenter.StopTimer();
-
-            _eventBus.Publish(new AllMatchlingsMatchedEvent(_levelTimerPresenter.GetTimeLimit()));
-        }
     }
 
     private void HandleOnNextLevelRequested(NextLevelRequestedEvent e)
@@ -98,8 +91,10 @@ public class MatchGameManager : MonoBehaviour
     }
 
 
-    private void HandleOnAllMatchlingsMatchedEvent(AllMatchlingsMatchedEvent e)
+    private void HandleOnAllMatchGoalsFulfilled(AllMatchGoalsFulfilledEvent e)
     {
+        _levelTimerPresenter.StopTimer();
+
         PlayerPrefs.SetInt("CurrentLevelId", PlayerPrefs.GetInt("CurrentLevelId", 0) + 1);
 
         _levelCompletedView.Appear(e.Timer);
@@ -120,7 +115,7 @@ public class MatchGameManager : MonoBehaviour
     {
         _eventBus.Unsubscribe<MatchlingMatchedEvent>(HandleOnMatchlingMatched);
         _eventBus.Unsubscribe<NextLevelRequestedEvent>(HandleOnNextLevelRequested);
-        _eventBus.Unsubscribe<AllMatchlingsMatchedEvent>(HandleOnAllMatchlingsMatchedEvent);
+        _eventBus.Unsubscribe<AllMatchGoalsFulfilledEvent>(HandleOnAllMatchGoalsFulfilled);
         _eventBus.Unsubscribe<CollectionFilledEvent>(HandleOnCollectionFilledEvent);
         _eventBus.Unsubscribe<TimeRanOutEvent>(HandleOnTimeRanOutEvent);
     }

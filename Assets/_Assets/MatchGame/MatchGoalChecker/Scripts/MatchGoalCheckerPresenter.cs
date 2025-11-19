@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class MatchGoalCheckerPresenter : MonoBehaviour
 {
-    [SerializeField] private List<MatchGoalSlotView> _slotImages;
+    [SerializeField] private List<MatchGoalSlotView> _matchGoalSlotViews;
 
     private EventBus _eventBus;
+    private MatchGoalCheckerModel _matchGoalCheckerModel;
     private MatchGameData _matchGameData;
 
     public void Initialize(EventBus eventBus, MatchGameData matchGameData)
@@ -13,32 +14,83 @@ public class MatchGoalCheckerPresenter : MonoBehaviour
         _eventBus = eventBus;
         _matchGameData = matchGameData;
 
-        foreach (var slotImage in _slotImages)
+        foreach (var slotImage in _matchGoalSlotViews)
         {
             slotImage.Initialize();
         }
+
+        _eventBus.Subscribe<MatchlingSelectedEvent>(HandleOnMatchlingSelected);
     }
 
     public void ResetForLevel(LevelData levelData)
     {
-        List<MatchGoal> matchGoals = levelData.matchGoalList;
-
-        for (int i = 0; i < _slotImages.Count; i++)
+        _matchGoalCheckerModel = new MatchGoalCheckerModel();
+        
+        foreach (var matchGoal in levelData.matchGoalList)
         {
-            if (i < matchGoals.Count)
+            MatchGoal newMatchGoal = new MatchGoal();
+            newMatchGoal.count = matchGoal.count;
+            newMatchGoal.matchlingType = matchGoal.matchlingType;
+            _matchGoalCheckerModel.MatchGoals.Add(newMatchGoal);
+        }
+
+        for (int i = 0; i < _matchGoalSlotViews.Count; i++)
+        {
+            if (i < _matchGoalCheckerModel.MatchGoals.Count)
             {
-                MatchGoal goal = matchGoals[i];
+                MatchGoal goal = _matchGoalCheckerModel.MatchGoals[i];
 
                 Sprite sprite = _matchGameData.GetSprite(goal.matchlingType);
 
-                _slotImages[i].gameObject.SetActive(true);
-                _slotImages[i].ResetForLevel(sprite, goal.matchlingType, goal.count
-                );
+                _matchGoalSlotViews[i].gameObject.SetActive(true);
+                _matchGoalSlotViews[i].ResetForLevel(sprite, goal.matchlingType, goal.count);
             }
             else
             {
-                _slotImages[i].gameObject.SetActive(false);
+                _matchGoalSlotViews[i].gameObject.SetActive(false);
             }
         }
+    }
+
+    private void HandleOnMatchlingSelected(MatchlingSelectedEvent e)
+    {
+        foreach (var matchGoal in _matchGoalCheckerModel.MatchGoals)
+        {
+            if (matchGoal.matchlingType == e.MatchlingPresenter.GetMatchlingType())
+            {
+                matchGoal.count--;
+            }
+        }
+        
+        foreach (var matchGoalSlotView in _matchGoalSlotViews)
+        {
+            if (matchGoalSlotView.GetMatchlingType() == e.MatchlingPresenter.GetMatchlingType())
+            {
+                matchGoalSlotView.ReduceCount();
+            }
+        }
+
+        if (AllMatchGoalsHaveBeenFulfilled())
+        {
+            _eventBus.Publish(new AllMatchGoalsFulfilledEvent());
+        }
+    }
+
+    private bool AllMatchGoalsHaveBeenFulfilled()
+    {
+        foreach (var matchGoal in _matchGoalCheckerModel.MatchGoals)
+        {
+            if (matchGoal.count > 0)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void OnDestroy()
+    {
+        _eventBus.Unsubscribe<MatchlingSelectedEvent>(HandleOnMatchlingSelected);
     }
 }
