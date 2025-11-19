@@ -2,15 +2,60 @@ using UnityEngine;
 
 public class MatchlingPresenter : MonoBehaviour
 {
-    private MatchlingView matchlingView;
-    private MatchlingModel matchlingModel;
+    private EventBus _eventBus;
+    private MatchlingView _matchlingView;
+    private MatchlingModel _matchlingModel;
+    private MatchlingPlacement _matchlingPlacement;
+    private MatchlingType _matchlingType;
 
-
-    public void Initialize(MatchlingPlacement matchlingPlacement, Sprite sprite)
+    public void Initialize(EventBus eventBus, MatchlingPlacement matchlingPlacement, MatchlingType matchlingType, Sprite sprite)
     {
-        matchlingView = GetComponent<MatchlingView>();
-        matchlingModel = new MatchlingModel();
+        _eventBus = eventBus;
+        _matchlingView = GetComponent<MatchlingView>();
+        _matchlingModel = new MatchlingModel();
+        _matchlingPlacement = matchlingPlacement;
+        _matchlingType = matchlingType;
         
-        matchlingView.Initialize(matchlingPlacement, sprite);
+        _matchlingView.Initialize(this, matchlingPlacement, sprite);
+    }
+    
+    public void OnViewClicked()
+    {
+        if (!_matchlingModel.IsSelected)
+        {
+            BecomeSelected();
+        }
+        else
+        {
+            BecomeDeselected();
+        }
+    }
+
+    public MatchlingType GetMatchlingType()
+    {
+        return _matchlingType;
+    }
+    
+    public void MoveToCollectionSlot(Transform collectionParent, Vector2 anchoredPosition, float size)
+    {
+        _matchlingView.MoveToCollectionArea(collectionParent, anchoredPosition, size);
+    }
+
+    private void MoveBackToGameArea()
+    {
+        _matchlingView.MoveToBackground();
+    }    
+    
+    private void BecomeSelected()
+    {
+        _matchlingModel.IsSelected = true;
+        _eventBus.Publish( new MatchlingSelectedEvent(this));
+    }
+
+    private void BecomeDeselected()
+    {
+        _matchlingModel.IsSelected = false;
+        _eventBus.Publish( new MatchlingDeselectedEvent(this));
+        MoveBackToGameArea();
     }
 }

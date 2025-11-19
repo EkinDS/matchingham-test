@@ -1,0 +1,4 @@
+public struct CollectionFilledEvent : IGameEvent
+{
+
+}

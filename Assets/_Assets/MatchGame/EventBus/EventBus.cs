@@ -1,0 +1,62 @@
+using System;
+using System.Collections.Generic;
+
+public interface IGameEvent
+{
+}
+
+public class EventBus
+{
+    readonly Dictionary<Type, List<Delegate>> _handlers = new();
+
+    public void Subscribe<T>(Action<T> handler) where T : IGameEvent
+    {
+        var type = typeof(T);
+
+        if (!_handlers.TryGetValue(type, out var list))
+        {
+            list = new List<Delegate>();
+            _handlers[type] = list;
+        }
+
+        if (!list.Contains(handler))
+        {
+            list.Add(handler);
+        }
+    }
+
+    public void Unsubscribe<T>(Action<T> handler) where T : IGameEvent
+    {
+        var type = typeof(T);
+
+        if (_handlers.TryGetValue(type, out var list))
+        {
+            list.Remove(handler);
+
+            if (list.Count == 0)
+            {
+                _handlers.Remove(type);
+            }
+        }
+    }
+
+    public void Publish<T>(T evt) where T : IGameEvent
+    {
+        var type = typeof(T);
+
+        if (!_handlers.TryGetValue(type, out var list))
+        {
+            return;
+        }
+
+        var snapshot = list.ToArray();
+
+        foreach (var t in snapshot)
+        {
+            if (t is Action<T> action)
+            {
+                action(evt);
+            }
+        }
+    }
+}

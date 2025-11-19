@@ -8,6 +8,7 @@ public class MatchGameData : ScriptableObject
     public List<LevelData> levelDataList;
     public List<MatchlingData> matchlingDataList;
 
+    
     public Sprite GetSprite(MatchlingType matchlingType)
     {
         foreach (var matchlingData in matchlingDataList)
