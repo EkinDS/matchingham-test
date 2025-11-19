@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,7 +26,7 @@ public class MatchGameManager : MonoBehaviour
         _levelCompletedView.Initialize(_eventBus);
         _levelFailedView.Initialize(_eventBus);
         _levelTimerPresenter.Initialize(_eventBus);
-        _matchGoalCheckerPresenter.Initialize(_eventBus);
+        _matchGoalCheckerPresenter.Initialize(_eventBus, _matchGameData);
         _background.Initialize();
 
         _eventBus.Subscribe<MatchlingMatchedEvent>(HandleOnMatchlingMatched);
@@ -60,10 +59,10 @@ public class MatchGameManager : MonoBehaviour
         int currentLevelId = PlayerPrefs.GetInt("CurrentLevelId", 0);
 
         LevelData levelData = _matchGameData.levelDataList[currentLevelId % _matchGameData.levelDataList.Count];
-
         _levelTimerPresenter.StartTimer(levelData.timeLimit);
 
         _background.ResetForLevel(levelData.backgroundSprite);
+        _matchGoalCheckerPresenter.ResetForLevel(levelData);
 
         foreach (var matchlingPlacementData in levelData.matchlingPlacementDataList)
         {
