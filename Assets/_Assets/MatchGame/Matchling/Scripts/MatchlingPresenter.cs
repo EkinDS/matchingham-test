@@ -7,21 +7,24 @@ public class MatchlingPresenter : MonoBehaviour
     private MatchlingModel _matchlingModel;
     private MatchlingType _matchlingType;
 
-    public void Initialize(EventBus eventBus, MatchlingPlacement matchlingPlacement, MatchlingType matchlingType, Sprite sprite)
+    public void Initialize(EventBus eventBus, MatchlingPlacement matchlingPlacement, MatchlingType matchlingType,
+        Sprite sprite)
     {
         _eventBus = eventBus;
         _matchlingView = GetComponent<MatchlingView>();
         _matchlingModel = new MatchlingModel();
         _matchlingType = matchlingType;
-        
+
         _matchlingView.Initialize(this, matchlingPlacement, sprite);
     }
-    
+
     public void OnViewClicked()
     {
         if (!_matchlingModel.IsSelected)
         {
-            BecomeSelected();
+            _matchlingModel.IsSelected = true;
+
+            _eventBus.Publish(new MatchlingSelectedEvent(this));
         }
     }
 
@@ -34,21 +37,14 @@ public class MatchlingPresenter : MonoBehaviour
     {
         return _matchlingType;
     }
-    
+
     public void MoveToCollectionSlot(Transform collectionParent, Vector2 anchoredPosition, float size)
     {
         _matchlingView.MoveToCollectionArea(collectionParent, anchoredPosition, size);
     }
 
-    public void Match(float  matchPositionX, float matchPositionY)
+    public void Match(float matchPositionX, float matchPositionY)
     {
         _matchlingView.Match(matchPositionX, matchPositionY);
-    }
-
-    private void BecomeSelected()
-    {
-        _matchlingModel.IsSelected = true;
-        
-        _eventBus.Publish( new MatchlingSelectedEvent(this));
     }
 }
