@@ -1,3 +1,16 @@
 {
-	"name": "AsmDef.MatchGame"
+    "name": "AsmDef.MatchGame",
+    "rootNamespace": "",
+    "references": [
+        "GUID:d255c53f5e4eea140aaf3781e03398f2"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

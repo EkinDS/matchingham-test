@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using NUnit.Framework;
+using UnityEditor;
+using UnityEngine;
 
 public class CollectionModel
 {
@@ -30,12 +33,44 @@ public class CollectionModel
         }
 
         MatchlingPresenters.Insert(indexToAddNewMatchlingPresenter, matchlingPresenter);
-
+        
         return true;
     }
 
     public void RemoveMatchlingPresenter(MatchlingPresenter matchlingPresenter)
     {
         MatchlingPresenters.Remove(matchlingPresenter);
+    }
+
+    public int GetMatchCenterIndex()
+    {
+        int index = -1;
+        
+        for (int i = 1; i < MatchlingPresenters.Count - 1; i++)
+        {
+            if (MatchlingPresenters[i - 1].GetMatchlingType() == MatchlingPresenters[i + 1].GetMatchlingType())
+            {
+                index = i;
+            }
+        }
+
+        return index;
+    }
+
+    public List<MatchlingPresenter> Match(int index)
+    {
+        List<MatchlingPresenter> matchlingPresentersToMatch = new List<MatchlingPresenter>
+        {
+            MatchlingPresenters[index - 1],
+            MatchlingPresenters[index],
+            MatchlingPresenters[index + 1]
+        };
+
+        foreach (var matchlingPresenter in matchlingPresentersToMatch)
+        {
+            MatchlingPresenters.Remove(matchlingPresenter);
+        }
+
+        return matchlingPresentersToMatch;
     }
 }

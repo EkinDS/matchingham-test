@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -17,7 +18,7 @@ public class MatchlingView : MonoBehaviour, IPointerClickHandler
         _thisRectTransform = GetComponent<RectTransform>();
         _thisImage = GetComponent<Image>();
         _parentTransform = transform.parent;
-        
+
         transform.localPosition = matchlingPlacement.position;
         _thisImage.sprite = sprite;
         _thisRectTransform.sizeDelta = new Vector2(matchlingPlacement.size, matchlingPlacement.size);
@@ -26,8 +27,8 @@ public class MatchlingView : MonoBehaviour, IPointerClickHandler
     public void MoveToCollectionArea(Transform parent, Vector2 position, float size)
     {
         transform.SetParent(parent);
-        transform.localPosition = position;
-        _thisRectTransform.sizeDelta = new Vector2(size, size);
+        transform.DOLocalMove(position, 0.5F).SetEase(Ease.InBack);
+        _thisRectTransform.DOSizeDelta(new Vector2(size, size), 0.5F).SetEase(Ease.InBack);
     }
 
     public void MoveToBackground()
@@ -40,5 +41,19 @@ public class MatchlingView : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         _matchlingPresenter.OnViewClicked();
+    }
+
+    public void Match(float matchPositionX, float matchPositionY)
+    {
+        transform.DOLocalMoveX(matchPositionX, 0.25F).SetEase(Ease.InSine);
+        transform.DOLocalMoveY(matchPositionY, 0.3F).SetEase(Ease.OutSine).OnComplete(() =>
+        {
+            Destroy(gameObject);
+        });
+    }
+
+    private void OnDestroy()
+    {
+        DOTween.Kill(this);
     }
 }

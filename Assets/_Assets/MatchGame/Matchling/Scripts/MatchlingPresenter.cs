@@ -41,6 +41,11 @@ public class MatchlingPresenter : MonoBehaviour
         _matchlingView.MoveToCollectionArea(collectionParent, anchoredPosition, size);
     }
 
+    public void Match(float  matchPositionX, float matchPositionY)
+    {
+        _matchlingView.Match(matchPositionX, matchPositionY);
+    }
+
     private void MoveBackToGameArea()
     {
         _matchlingView.MoveToBackground();
