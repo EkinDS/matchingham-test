@@ -8,16 +8,12 @@ public class MatchlingView : MonoBehaviour, IPointerClickHandler
     private Image _thisImage;
     private RectTransform _thisRectTransform;
     private MatchlingPresenter _matchlingPresenter;
-    private MatchlingPlacement _matchlingPlacement;
-    private Transform _parentTransform;
 
     public void Initialize(MatchlingPresenter matchlingPresenter, MatchlingPlacement matchlingPlacement, Sprite sprite)
     {
         _matchlingPresenter = matchlingPresenter;
-        _matchlingPlacement = matchlingPlacement;
         _thisRectTransform = GetComponent<RectTransform>();
         _thisImage = GetComponent<Image>();
-        _parentTransform = transform.parent;
 
         transform.localPosition = matchlingPlacement.position;
         _thisImage.sprite = sprite;
@@ -34,15 +30,10 @@ public class MatchlingView : MonoBehaviour, IPointerClickHandler
         });
     }
 
-    public void MoveToBackground()
-    {
-        transform.SetParent(_parentTransform);
-        transform.localPosition = _matchlingPlacement.position;
-        _thisRectTransform.sizeDelta = new Vector2(_matchlingPlacement.size, _matchlingPlacement.size);
-    }
-
     public void OnPointerClick(PointerEventData eventData)
     {
+        _thisImage.raycastTarget = false;
+        
         _matchlingPresenter.OnViewClicked();
     }
 

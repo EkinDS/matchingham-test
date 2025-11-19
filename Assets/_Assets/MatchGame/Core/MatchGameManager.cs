@@ -44,7 +44,10 @@ public class MatchGameManager : MonoBehaviour
         {
             foreach (var matchlingPresenter in _matchlingPresenters)
             {
-                Destroy(matchlingPresenter.gameObject);
+                if (matchlingPresenter)
+                {
+                    Destroy(matchlingPresenter.gameObject);
+                }
             }
         }
 

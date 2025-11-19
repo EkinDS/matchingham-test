@@ -5,7 +5,6 @@ public class MatchlingPresenter : MonoBehaviour
     private EventBus _eventBus;
     private MatchlingView _matchlingView;
     private MatchlingModel _matchlingModel;
-    private MatchlingPlacement _matchlingPlacement;
     private MatchlingType _matchlingType;
 
     public void Initialize(EventBus eventBus, MatchlingPlacement matchlingPlacement, MatchlingType matchlingType, Sprite sprite)
@@ -13,7 +12,6 @@ public class MatchlingPresenter : MonoBehaviour
         _eventBus = eventBus;
         _matchlingView = GetComponent<MatchlingView>();
         _matchlingModel = new MatchlingModel();
-        _matchlingPlacement = matchlingPlacement;
         _matchlingType = matchlingType;
         
         _matchlingView.Initialize(this, matchlingPlacement, sprite);
@@ -24,10 +22,6 @@ public class MatchlingPresenter : MonoBehaviour
         if (!_matchlingModel.IsSelected)
         {
             BecomeSelected();
-        }
-        else
-        {
-            BecomeDeselected();
         }
     }
 
@@ -51,21 +45,10 @@ public class MatchlingPresenter : MonoBehaviour
         _matchlingView.Match(matchPositionX, matchPositionY);
     }
 
-    private void MoveBackToGameArea()
-    {
-        _matchlingView.MoveToBackground();
-    }    
-    
     private void BecomeSelected()
     {
         _matchlingModel.IsSelected = true;
+        
         _eventBus.Publish( new MatchlingSelectedEvent(this));
-    }
-
-    private void BecomeDeselected()
-    {
-        _matchlingModel.IsSelected = false;
-        _eventBus.Publish( new MatchlingDeselectedEvent(this));
-        MoveBackToGameArea();
     }
 }
