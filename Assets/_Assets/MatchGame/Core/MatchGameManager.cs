@@ -29,7 +29,6 @@ public class MatchGameManager : MonoBehaviour
         _matchGoalCheckerPresenter.Initialize(_eventBus, _matchGameData);
         _background.Initialize();
 
-        _eventBus.Subscribe<MatchlingMatchedEvent>(HandleOnMatchlingMatched);
         _eventBus.Subscribe<NextLevelRequestedEvent>(HandleOnNextLevelRequested);
         _eventBus.Subscribe<CollectionFilledEvent>(HandleOnCollectionFilledEvent);
         _eventBus.Subscribe<AllMatchGoalsFulfilledEvent>(HandleOnAllMatchGoalsFulfilled);
@@ -79,11 +78,6 @@ public class MatchGameManager : MonoBehaviour
         }
     }
 
-    private void HandleOnMatchlingMatched(MatchlingMatchedEvent e)
-    {
-        _matchlingPresenters.Remove(e.MatchlingPresenter);
-    }
-
     private void HandleOnNextLevelRequested(NextLevelRequestedEvent e)
     {
         ResetGame();
@@ -97,7 +91,7 @@ public class MatchGameManager : MonoBehaviour
 
         PlayerPrefs.SetInt("CurrentLevelId", PlayerPrefs.GetInt("CurrentLevelId", 0) + 1);
 
-        _levelCompletedView.Appear(e.Timer);
+        _levelCompletedView.Appear(_levelTimerPresenter.GetTimeLimit());
     }
 
     private void HandleOnCollectionFilledEvent(CollectionFilledEvent e)
@@ -113,7 +107,6 @@ public class MatchGameManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        _eventBus.Unsubscribe<MatchlingMatchedEvent>(HandleOnMatchlingMatched);
         _eventBus.Unsubscribe<NextLevelRequestedEvent>(HandleOnNextLevelRequested);
         _eventBus.Unsubscribe<AllMatchGoalsFulfilledEvent>(HandleOnAllMatchGoalsFulfilled);
         _eventBus.Unsubscribe<CollectionFilledEvent>(HandleOnCollectionFilledEvent);

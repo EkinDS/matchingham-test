@@ -28,9 +28,12 @@ public class MatchGoalCheckerPresenter : MonoBehaviour
         
         foreach (var matchGoal in levelData.matchGoalList)
         {
-            MatchGoal newMatchGoal = new MatchGoal();
-            newMatchGoal.count = matchGoal.count;
-            newMatchGoal.matchlingType = matchGoal.matchlingType;
+            MatchGoal newMatchGoal = new MatchGoal
+            {
+                count = matchGoal.count,
+                matchlingType = matchGoal.matchlingType
+            };
+            
             _matchGoalCheckerModel.MatchGoals.Add(newMatchGoal);
         }
 
