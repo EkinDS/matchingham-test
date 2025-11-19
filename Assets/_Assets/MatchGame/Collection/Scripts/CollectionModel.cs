@@ -5,9 +5,8 @@ using UnityEngine;
 
 public class CollectionModel
 {
+    public readonly int CollectionCapacity = 7;
     public List<MatchlingPresenter> MatchlingPresenters;
-
-    private int _collectionCapacity = 6;
 
     public CollectionModel()
     {
@@ -16,7 +15,7 @@ public class CollectionModel
 
     public bool TryToAddMatchlingToCollection(MatchlingPresenter matchlingPresenter)
     {
-        if (MatchlingPresenters.Count >= _collectionCapacity)
+        if (MatchlingPresenters.Count >= CollectionCapacity)
         {
             return false;
         }
@@ -35,11 +34,6 @@ public class CollectionModel
         MatchlingPresenters.Insert(indexToAddNewMatchlingPresenter, matchlingPresenter);
         
         return true;
-    }
-
-    public void RemoveMatchlingPresenter(MatchlingPresenter matchlingPresenter)
-    {
-        MatchlingPresenters.Remove(matchlingPresenter);
     }
 
     public int GetMatchCenterIndex()
