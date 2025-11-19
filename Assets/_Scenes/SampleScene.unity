@@ -362,7 +362,7 @@ MonoBehaviour:
   _collectionPresenter: {fileID: 921687067}
   _matchGameData: {fileID: 11400000, guid: 0630747d752b7174ca3effc645fe96f9, type: 2}
   _matchlingPresenterPrefab: {fileID: 3343791724740975320, guid: 61f1da1e0b69e174e8966fe37031c8c5, type: 3}
-  backgroundImage: {fileID: 937679022}
+  background: {fileID: 937679024}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -950,6 +950,7 @@ GameObject:
   - component: {fileID: 937679021}
   - component: {fileID: 937679023}
   - component: {fileID: 937679022}
+  - component: {fileID: 937679024}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -1014,6 +1015,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 937679020}
   m_CullTransparentMesh: 1
+--- !u!114 &937679024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 937679020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aeb4c306c885d94d807509642cc7ea0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minZoom: 1
+  maxZoom: 2
+  mouseZoomSpeed: 0.1
+  minimumPosition: {x: -850, y: -850}
+  maximumPosition: {x: 850, y: 850}
 --- !u!1001 &1086498959
 PrefabInstance:
   m_ObjectHideFlags: 0

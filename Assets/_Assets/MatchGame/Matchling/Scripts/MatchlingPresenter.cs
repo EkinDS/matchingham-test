@@ -31,6 +31,11 @@ public class MatchlingPresenter : MonoBehaviour
         }
     }
 
+    public void OnPlacedInCollection()
+    {
+        _eventBus.Publish(new MatchlingPlacedInCollectionEvent());
+    }
+
     public MatchlingType GetMatchlingType()
     {
         return _matchlingType;
@@ -44,6 +49,8 @@ public class MatchlingPresenter : MonoBehaviour
     public void Match(float  matchPositionX, float matchPositionY)
     {
         _matchlingView.Match(matchPositionX, matchPositionY);
+        
+        _eventBus.Publish(new MatchlingMatchedEvent(this));
     }
 
     private void MoveBackToGameArea()

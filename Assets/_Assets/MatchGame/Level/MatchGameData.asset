@@ -48,6 +48,41 @@ MonoBehaviour:
       - position: {x: 555, y: 111}
         size: 100
         order: 8
+  - backgroundSprite: {fileID: 21300000, guid: 33f37a1690a1a804dba5dae3f474efcb, type: 3}
+    matchlingPlacementDataList:
+    - matchlingType: 1
+      MatchlingPlacementList:
+      - position: {x: 444, y: 444}
+        size: 111
+        order: 0
+      - position: {x: 333, y: 333}
+        size: 222
+        order: 1
+      - position: {x: 222, y: 222}
+        size: 333
+        order: 2
+    - matchlingType: 2
+      MatchlingPlacementList:
+      - position: {x: 0, y: 0}
+        size: 100
+        order: 3
+      - position: {x: -100, y: 222}
+        size: 100
+        order: 4
+      - position: {x: -200, y: 111}
+        size: 222
+        order: 5
+    - matchlingType: 3
+      MatchlingPlacementList:
+      - position: {x: 555, y: 333}
+        size: 100
+        order: 6
+      - position: {x: 555, y: 222}
+        size: 100
+        order: 7
+      - position: {x: 555, y: 111}
+        size: 100
+        order: 8
   matchlingDataList:
   - matchlingType: 1
     sprite: {fileID: 21300000, guid: 8d6cbb612b3aada4d9856c317419a8fa, type: 3}

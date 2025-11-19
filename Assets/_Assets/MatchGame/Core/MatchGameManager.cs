@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class MatchGameManager : MonoBehaviour
 {
@@ -7,9 +7,10 @@ public class MatchGameManager : MonoBehaviour
     [SerializeField] private CollectionPresenter _collectionPresenter;
     [SerializeField] private MatchGameData _matchGameData;
     [SerializeField] private MatchlingPresenter _matchlingPresenterPrefab;
-    [SerializeField] private Image backgroundImage;
+    [SerializeField] private Background background;
 
     private EventBus _eventBus;
+    private List<MatchlingPresenter> _matchlingPresenters;
 
     private void Awake()
     {
@@ -18,25 +19,40 @@ public class MatchGameManager : MonoBehaviour
 
         _collectionPresenter.Initialize(_eventBus);
 
-        SpawnMatchlings(0);
+        SpawnLevel(1);
+        
+        _eventBus.Subscribe<MatchlingMatchedEvent>(HandleOnMatchlingMatched);
     }
 
 
-    private void SpawnMatchlings(int levelId)
+    private void SpawnLevel(int levelId)
     {
+        _matchlingPresenters = new List<MatchlingPresenter>();
+        
         LevelData levelData = _matchGameData.levelDataList[levelId];
 
-        backgroundImage.sprite = levelData.backgroundSprite;
+        background.Initialize(levelData.backgroundSprite);
 
         foreach (var matchlingPlacementData in levelData.matchlingPlacementDataList)
         {
             foreach (var matchlingPlacement in matchlingPlacementData.MatchlingPlacementList)
             {
-                MatchlingPresenter newMatchlingPresenter =
-                    Instantiate(_matchlingPresenterPrefab, backgroundImage.transform);
+                MatchlingPresenter newMatchlingPresenter = Instantiate(_matchlingPresenterPrefab, background.transform);
 
+                _matchlingPresenters.Add(newMatchlingPresenter);
+                
                 newMatchlingPresenter.Initialize(_eventBus, matchlingPlacement, matchlingPlacementData.matchlingType, _matchGameData.GetSprite(matchlingPlacementData.matchlingType));
             }
+        }
+    }
+
+    private void HandleOnMatchlingMatched(MatchlingMatchedEvent e)
+    {
+        _matchlingPresenters.Remove(e.MatchlingPresenter);
+
+        if (_matchlingPresenters.Count == 0)
+        {
+            print("Level completed!");
         }
     }
 }

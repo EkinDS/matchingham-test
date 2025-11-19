@@ -27,8 +27,11 @@ public class MatchlingView : MonoBehaviour, IPointerClickHandler
     public void MoveToCollectionArea(Transform parent, Vector2 position, float size)
     {
         transform.SetParent(parent);
-        transform.DOLocalMove(position, 0.5F).SetEase(Ease.InBack);
-        _thisRectTransform.DOSizeDelta(new Vector2(size, size), 0.5F).SetEase(Ease.InBack);
+        _thisRectTransform.DOSizeDelta(new Vector2(size, size), 0.3F).SetEase(Ease.InBack);
+        transform.DOLocalMove(position, 0.5F).SetEase(Ease.InBack).OnComplete(() =>
+        {
+            _matchlingPresenter.OnPlacedInCollection();
+        });
     }
 
     public void MoveToBackground()
