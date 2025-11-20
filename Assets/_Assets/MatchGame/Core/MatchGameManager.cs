@@ -1,9 +1,11 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class MatchGameManager : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private EventBusManager _eventBusManager;
     [SerializeField] private CollectionPresenter _collectionPresenter;
     [SerializeField] private MatchGameData _matchGameData;
@@ -13,11 +15,12 @@ public class MatchGameManager : MonoBehaviour
     [SerializeField] private LevelFailedView _levelFailedView;
     [SerializeField] private LevelTimerPresenter _levelTimerPresenter;
     [SerializeField] private MatchGoalCheckerPresenter _matchGoalCheckerPresenter;
+    [SerializeField] private SpriteService _spriteService;
 
     private EventBus _eventBus;
     private List<MatchlingPresenter> _matchlingPresenters;
     private bool _readyToFinishLevel;
-
+    private Coroutine _loadGameCoroutine;
 
     private void Awake()
     {
@@ -28,7 +31,7 @@ public class MatchGameManager : MonoBehaviour
         _levelCompletedView.Initialize(_eventBus);
         _levelFailedView.Initialize(_eventBus);
         _levelTimerPresenter.Initialize(_eventBus);
-        _matchGoalCheckerPresenter.Initialize(_eventBus, _matchGameData);
+        _matchGoalCheckerPresenter.Initialize(_eventBus, _matchGameData, _spriteService);
         _background.Initialize();
 
         _eventBus.Subscribe<NextLevelRequestedEvent>(HandleOnNextLevelRequested);
@@ -38,12 +41,18 @@ public class MatchGameManager : MonoBehaviour
         _eventBus.Subscribe<MatchCompletedEvent>(HandleOnMatchCompletedEvent);
 
         ResetGame();
-        LoadGame();
+        _loadGameCoroutine = StartCoroutine(LoadGameCoroutine());
     }
 
     private void ResetGame()
     {
         _readyToFinishLevel = false;
+
+        if (_loadGameCoroutine != null)
+        {
+            StopCoroutine(_loadGameCoroutine);
+            _loadGameCoroutine = null;
+        }
 
         if (_matchlingPresenters != null)
         {
@@ -58,21 +67,51 @@ public class MatchGameManager : MonoBehaviour
 
         _matchlingPresenters = new List<MatchlingPresenter>();
 
+        _spriteService.UnloadAll();
+
         _collectionPresenter.ResetForLevel();
     }
 
-    private void LoadGame()
+
+    private IEnumerator LoadGameCoroutine()
     {
         int currentLevelId = PlayerPrefs.GetInt("CurrentLevelId", 0);
 
         LevelData levelData = _matchGameData.levelDataList[currentLevelId % _matchGameData.levelDataList.Count];
+
+        var typesNeeded = new HashSet<MatchlingType>();
+
+        if (levelData.matchlingPlacementDataList != null)
+        {
+            foreach (var placementData in levelData.matchlingPlacementDataList)
+            {
+                typesNeeded.Add(placementData.matchlingType);
+            }
+        }
+
+        if (levelData.matchGoalList != null)
+        {
+            foreach (var goal in levelData.matchGoalList)
+            {
+                typesNeeded.Add(goal.matchlingType);
+            }
+        }
+
         _levelTimerPresenter.StartTimer(levelData.timeLimit);
 
-        _background.ResetForLevel(levelData.backgroundSprite);
+        yield return StartCoroutine(_spriteService.LoadMatchlingSprites(typesNeeded));
+        yield return StartCoroutine(_spriteService.LoadBackgroundSprite(levelData.backgroundType));
+
+
+        Sprite bgSprite = _spriteService.GetBackgroundSprite(levelData.backgroundType);
+        _background.ResetForLevel(bgSprite);
+
         _matchGoalCheckerPresenter.ResetForLevel(levelData);
 
         SpawnMatchlings(levelData);
     }
+
+
 
     private void SpawnMatchlings(LevelData levelData)
     {
@@ -97,8 +136,9 @@ public class MatchGameManager : MonoBehaviour
 
             _matchlingPresenters.Add(newMatchlingPresenter);
 
-            newMatchlingPresenter.Initialize(_eventBus, matchlingPlacement, matchlingType,
-                _matchGameData.GetSprite(matchlingType));
+            Sprite sprite = _spriteService.GetMatchlingSprite(matchlingType);
+
+            newMatchlingPresenter.Initialize(_eventBus, matchlingPlacement, matchlingType, sprite);
         }
     }
 
@@ -106,9 +146,8 @@ public class MatchGameManager : MonoBehaviour
     private void HandleOnNextLevelRequested(NextLevelRequestedEvent e)
     {
         ResetGame();
-        LoadGame();
+        _loadGameCoroutine = StartCoroutine(LoadGameCoroutine());
     }
-
 
     private void HandleOnAllMatchGoalsFulfilled(AllMatchGoalsFulfilledEvent e)
     {
@@ -136,16 +175,24 @@ public class MatchGameManager : MonoBehaviour
 
     private void HandleOnCollectionFilledEvent(CollectionFilledEvent e)
     {
+        print("fill");
+
         _levelFailedView.Appear();
     }
 
     private void HandleOnTimeRanOutEvent(TimeRanOutEvent e)
     {
+        print("time");
         _levelFailedView.Appear();
     }
 
     private void OnDestroy()
     {
+        if (_eventBus == null)
+        {
+            return;
+        }
+
         _eventBus.Unsubscribe<NextLevelRequestedEvent>(HandleOnNextLevelRequested);
         _eventBus.Unsubscribe<AllMatchGoalsFulfilledEvent>(HandleOnAllMatchGoalsFulfilled);
         _eventBus.Unsubscribe<CollectionFilledEvent>(HandleOnCollectionFilledEvent);

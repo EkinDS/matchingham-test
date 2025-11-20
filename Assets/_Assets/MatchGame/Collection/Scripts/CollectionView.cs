@@ -12,7 +12,7 @@ public class CollectionView : MonoBehaviour
     private int _capacity;
     private List<Tween> _tweens;
     private Coroutine _coroutine;
-    private CollectionPresenter _collectionPresenter; //bunu eventle de halledebilirim
+    private CollectionPresenter _collectionPresenter;
 
     public void Initialize()
     {

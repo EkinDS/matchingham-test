@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelDataList:
   - timeLimit: 60
-    backgroundSprite: {fileID: 21300000, guid: 84d017d2e6dce954da854a5ee09dd3ca, type: 3}
+    backgroundType: 1
     matchlingPlacementDataList:
     - matchlingType: 1
       MatchlingPlacementList:
@@ -136,7 +136,7 @@ MonoBehaviour:
     - matchlingType: 1
       count: 9
   - timeLimit: 60
-    backgroundSprite: {fileID: 21300000, guid: 33f37a1690a1a804dba5dae3f474efcb, type: 3}
+    backgroundType: 2
     matchlingPlacementDataList:
     - matchlingType: 1
       MatchlingPlacementList:
@@ -259,14 +259,3 @@ MonoBehaviour:
       count: 12
     - matchlingType: 3
       count: 9
-  matchlingDataList:
-  - matchlingType: 1
-    sprite: {fileID: 21300000, guid: 8d6cbb612b3aada4d9856c317419a8fa, type: 3}
-  - matchlingType: 2
-    sprite: {fileID: 21300000, guid: b37f54633377a3343b4449e30e97651e, type: 3}
-  - matchlingType: 3
-    sprite: {fileID: 21300000, guid: 417dd2ad49e9e0d42a59dccf8f359fe2, type: 3}
-  - matchlingType: 4
-    sprite: {fileID: 21300000, guid: e96cca6665dcb2f45973056f91be8189, type: 3}
-  - matchlingType: 5
-    sprite: {fileID: 21300000, guid: 4bf6d673c0c8a2b4288b7c2ae208cc92, type: 3}

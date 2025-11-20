@@ -8,15 +8,17 @@ public class MatchGoalCheckerPresenter : MonoBehaviour
     private EventBus _eventBus;
     private MatchGoalCheckerModel _matchGoalCheckerModel;
     private MatchGameData _matchGameData;
+    private SpriteService _spriteService;
 
-    public void Initialize(EventBus eventBus, MatchGameData matchGameData)
+    public void Initialize(EventBus eventBus, MatchGameData matchGameData, SpriteService spriteService)
     {
         _eventBus = eventBus;
         _matchGameData = matchGameData;
+        _spriteService = spriteService;
 
-        foreach (var slotImage in _matchGoalSlotViews)
+        foreach (var slotView in _matchGoalSlotViews)
         {
-            slotImage.Initialize();
+            slotView.Initialize();
         }
 
         _eventBus.Subscribe<MatchlingSelectedEvent>(HandleOnMatchlingSelected);
@@ -25,7 +27,7 @@ public class MatchGoalCheckerPresenter : MonoBehaviour
     public void ResetForLevel(LevelData levelData)
     {
         _matchGoalCheckerModel = new MatchGoalCheckerModel();
-        
+
         foreach (var matchGoal in levelData.matchGoalList)
         {
             MatchGoal newMatchGoal = new MatchGoal
@@ -33,17 +35,19 @@ public class MatchGoalCheckerPresenter : MonoBehaviour
                 count = matchGoal.count,
                 matchlingType = matchGoal.matchlingType
             };
-            
+
             _matchGoalCheckerModel.MatchGoals.Add(newMatchGoal);
         }
 
+        // Setup UI slots
         for (int i = 0; i < _matchGoalSlotViews.Count; i++)
         {
             if (i < _matchGoalCheckerModel.MatchGoals.Count)
             {
                 MatchGoal goal = _matchGoalCheckerModel.MatchGoals[i];
 
-                Sprite sprite = _matchGameData.GetSprite(goal.matchlingType);
+                // ✅ Get sprite from SpriteService (addressables-backed)
+                Sprite sprite = _spriteService.GetMatchlingSprite(goal.matchlingType);
 
                 _matchGoalSlotViews[i].gameObject.SetActive(true);
                 _matchGoalSlotViews[i].ResetForLevel(sprite, goal.matchlingType, goal.count);
@@ -57,6 +61,7 @@ public class MatchGoalCheckerPresenter : MonoBehaviour
 
     private void HandleOnMatchlingSelected(MatchlingSelectedEvent e)
     {
+        // Update model counts
         foreach (var matchGoal in _matchGoalCheckerModel.MatchGoals)
         {
             if (matchGoal.matchlingType == e.MatchlingPresenter.GetMatchlingType())
@@ -64,7 +69,8 @@ public class MatchGoalCheckerPresenter : MonoBehaviour
                 matchGoal.count--;
             }
         }
-        
+
+        // Update UI
         foreach (var matchGoalSlotView in _matchGoalSlotViews)
         {
             if (matchGoalSlotView.GetMatchlingType() == e.MatchlingPresenter.GetMatchlingType())
@@ -73,6 +79,7 @@ public class MatchGoalCheckerPresenter : MonoBehaviour
             }
         }
 
+        // Check completion
         if (AllMatchGoalsHaveBeenFulfilled())
         {
             _eventBus.Publish(new AllMatchGoalsFulfilledEvent());
@@ -94,6 +101,9 @@ public class MatchGoalCheckerPresenter : MonoBehaviour
 
     private void OnDestroy()
     {
-        _eventBus.Unsubscribe<MatchlingSelectedEvent>(HandleOnMatchlingSelected);
+        if (_eventBus != null)
+        {
+            _eventBus.Unsubscribe<MatchlingSelectedEvent>(HandleOnMatchlingSelected);
+        }
     }
 }

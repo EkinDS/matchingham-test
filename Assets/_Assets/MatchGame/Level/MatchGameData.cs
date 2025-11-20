@@ -6,37 +6,16 @@ using UnityEngine;
 public class MatchGameData : ScriptableObject
 {
     public List<LevelData> levelDataList;
-    public List<MatchlingData> matchlingDataList;
-
-    
-    public Sprite GetSprite(MatchlingType matchlingType)
-    {
-        foreach (var matchlingData in matchlingDataList)
-        {
-            if (matchlingData.matchlingType == matchlingType)
-            {
-                return matchlingData.sprite;
-            }
-        }
-
-        return null;
-    }
 }
 
 [Serializable]
 public class LevelData
 {
     public float timeLimit;
-    public Sprite backgroundSprite;
+    public BackgroundType backgroundType;
+
     public List<MatchlingPlacementData> matchlingPlacementDataList;
     public List<MatchGoal> matchGoalList;
-}
-
-[Serializable]
-public class MatchlingData
-{
-    public MatchlingType matchlingType;
-    public Sprite sprite;
 }
 
 [Serializable]
@@ -69,4 +48,12 @@ public enum MatchlingType
     Car = 3,
     Elephant = 4,
     Rock = 5,
+}
+
+
+public enum BackgroundType
+{
+    None = 0,
+    Roads = 1,
+    Beach = 2,
 }
