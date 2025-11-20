@@ -43,8 +43,8 @@ public class MatchlingPresenter : MonoBehaviour
         _matchlingView.MoveToCollectionArea(collectionParent, anchoredPosition, size);
     }
 
-    public void Match(float matchPositionX, float matchPositionY)
+    public void Match(Transform parent, float matchPositionX, float matchPositionY )
     {
-        _matchlingView.Match(matchPositionX, matchPositionY);
+        _matchlingView.Match(parent, matchPositionX, matchPositionY);
     }
 }

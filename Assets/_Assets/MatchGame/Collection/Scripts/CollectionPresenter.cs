@@ -25,7 +25,20 @@ public class CollectionPresenter : MonoBehaviour
     {
         if (_collectionModel.TryToAddMatchlingToCollection(e.MatchlingPresenter))
         {
-            _collectionView.RearrangeMatchlingPresenters(_collectionModel.MatchlingPresenters);
+            int matchCenterIndex = _collectionModel.GetMatchCenterIndex();
+
+            if (matchCenterIndex != -1)
+            {
+                List<MatchlingPresenter> matchlingPresentersToMatch = _collectionModel.Match(matchCenterIndex);
+
+                _collectionView.Match(matchlingPresentersToMatch);
+                _collectionView.RearrangeMatchlingPresenters(_collectionModel.MatchlingPresenters);
+            }
+            else
+            {
+                _collectionView.PlaceMatchling(e.MatchlingPresenter, _collectionModel.MatchlingPresenters.IndexOf(e.MatchlingPresenter));
+                //_collectionView.RearrangeMatchlingPresenters(_collectionModel.MatchlingPresenters);
+            }
         }
     }
 
@@ -46,11 +59,11 @@ public class CollectionPresenter : MonoBehaviour
 
     private void Match(int matchCenterIndex)
     {
-        List<MatchlingPresenter> matchlingPresentersToMatch = _collectionModel.Match(matchCenterIndex);
+        return;
+        //_collectionView.Match(matchlingPresentersToMatch);
 
-        _collectionView.Match(matchlingPresentersToMatch);
 
-        _collectionView.RearrangeMatchlingPresenters(_collectionModel.MatchlingPresenters);
+        //_collectionView.RearrangeMatchlingPresenters(_collectionModel.MatchlingPresenters);
     }
 
     private void OnDestroy()

@@ -37,8 +37,10 @@ public class MatchlingView : MonoBehaviour, IPointerClickHandler
         _matchlingPresenter.OnViewClicked();
     }
 
-    public void Match(float matchPositionX, float matchPositionY)
+    public void Match(Transform parent, float matchPositionX, float matchPositionY)
     {
+        transform.SetParent(parent);
+
         transform.DOLocalMoveX(matchPositionX, 0.25F).SetEase(Ease.InSine);
         transform.DOLocalMoveY(matchPositionY, 0.3F).SetEase(Ease.OutSine).OnComplete(() =>
         {
