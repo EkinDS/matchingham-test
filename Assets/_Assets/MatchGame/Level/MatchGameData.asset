@@ -13,20 +13,38 @@ MonoBehaviour:
   m_Name: MatchGameData
   m_EditorClassIdentifier: 
   levelDataList:
-  - timeLimit: 30
+  - timeLimit: 60
     backgroundSprite: {fileID: 21300000, guid: 84d017d2e6dce954da854a5ee09dd3ca, type: 3}
     matchlingPlacementDataList:
     - matchlingType: 1
       MatchlingPlacementList:
-      - position: {x: 100, y: 0}
+      - position: {x: 333, y: 333}
+        size: 300
+        order: 9
+      - position: {x: 222, y: 222}
+        size: 200
+        order: 9
+      - position: {x: 111, y: 111}
         size: 100
-        order: 0
-      - position: {x: 0, y: 0}
-        size: 100
-        order: 1
+        order: 9
+      - position: {x: 55, y: 55}
+        size: 50
+        order: 9
       - position: {x: 200, y: 0}
+        size: 222
+        order: 9
+      - position: {x: 300, y: 0}
+        size: 333
+        order: 9
+      - position: {x: 400, y: 0}
+        size: 222
+        order: 9
+      - position: {x: 500, y: -800}
+        size: 111
+        order: 9
+      - position: {x: 100, y: 200}
         size: 100
-        order: 2
+        order: 9
     - matchlingType: 2
       MatchlingPlacementList:
       - position: {x: 100, y: 333}
@@ -38,61 +56,209 @@ MonoBehaviour:
       - position: {x: 200, y: 111}
         size: 100
         order: 5
+      - position: {x: -111, y: 111}
+        size: 100
+        order: 5
+      - position: {x: -222, y: 111}
+        size: 100
+        order: 5
+      - position: {x: -333, y: 111}
+        size: 100
+        order: 5
+      - position: {x: -333, y: -333}
+        size: 100
+        order: 5
+      - position: {x: -444, y: -444}
+        size: 100
+        order: 5
+      - position: {x: -555, y: 100}
+        size: 100
+        order: 5
     - matchlingType: 3
       MatchlingPlacementList:
-      - position: {x: 555, y: 333}
+      - position: {x: -100, y: 0}
         size: 100
         order: 6
-      - position: {x: 555, y: 222}
+      - position: {x: -200, y: 0}
         size: 100
         order: 7
-      - position: {x: 555, y: 111}
+      - position: {x: -300, y: 0}
+        size: 100
+        order: 8
+      - position: {x: 666, y: 0}
+        size: 100
+        order: 8
+      - position: {x: 777, y: 0}
+        size: 100
+        order: 8
+      - position: {x: 888, y: 0}
+        size: 100
+        order: 8
+      - position: {x: 1111, y: 1111}
+        size: 100
+        order: 8
+      - position: {x: 1222, y: 1222}
+        size: 100
+        order: 8
+      - position: {x: 1333, y: 1333}
+        size: 100
+        order: 8
+      - position: {x: 900, y: 0}
+        size: 100
+        order: 8
+      - position: {x: 800, y: 0}
+        size: 100
+        order: 8
+      - position: {x: 850, y: 50}
+        size: 100
+        order: 8
+    - matchlingType: 5
+      MatchlingPlacementList:
+      - position: {x: -500, y: -500}
+        size: 100
+        order: 6
+      - position: {x: -500, y: -600}
+        size: 100
+        order: 7
+      - position: {x: -600, y: -500}
+        size: 100
+        order: 8
+      - position: {x: -600, y: -600}
+        size: 100
+        order: 8
+      - position: {x: -444, y: -600}
+        size: 333
+        order: 9
+      - position: {x: 888, y: -200}
         size: 100
         order: 8
     matchGoalList:
     - matchlingType: 1
-      count: 3
-  - timeLimit: 300
+      count: 9
+  - timeLimit: 60
     backgroundSprite: {fileID: 21300000, guid: 33f37a1690a1a804dba5dae3f474efcb, type: 3}
     matchlingPlacementDataList:
     - matchlingType: 1
       MatchlingPlacementList:
-      - position: {x: 444, y: 444}
-        size: 111
-        order: 0
       - position: {x: 333, y: 333}
-        size: 222
-        order: 1
+        size: 300
+        order: 9
       - position: {x: 222, y: 222}
-        size: 333
-        order: 2
-    - matchlingType: 2
-      MatchlingPlacementList:
-      - position: {x: 0, y: 0}
+        size: 200
+        order: 9
+      - position: {x: 111, y: 111}
         size: 100
-        order: 3
-      - position: {x: -100, y: 222}
-        size: 100
-        order: 4
-      - position: {x: -200, y: 111}
+        order: 9
+      - position: {x: 55, y: 55}
+        size: 50
+        order: 9
+      - position: {x: 200, y: 0}
         size: 222
-        order: 5
+        order: 9
+      - position: {x: 300, y: 0}
+        size: 333
+        order: 9
+      - position: {x: 400, y: 0}
+        size: 222
+        order: 9
+      - position: {x: 500, y: -800}
+        size: 111
+        order: 9
+      - position: {x: 100, y: 200}
+        size: 100
+        order: 9
     - matchlingType: 3
       MatchlingPlacementList:
-      - position: {x: 555, y: 333}
+      - position: {x: 100, y: 333}
+        size: 100
+        order: 3
+      - position: {x: 0, y: 222}
+        size: 100
+        order: 4
+      - position: {x: 200, y: 111}
+        size: 100
+        order: 5
+      - position: {x: -111, y: 111}
+        size: 100
+        order: 5
+      - position: {x: -222, y: 111}
+        size: 100
+        order: 5
+      - position: {x: -333, y: 111}
+        size: 100
+        order: 5
+      - position: {x: -333, y: -333}
+        size: 100
+        order: 5
+      - position: {x: -444, y: -444}
+        size: 100
+        order: 5
+      - position: {x: -555, y: 100}
+        size: 100
+        order: 5
+    - matchlingType: 2
+      MatchlingPlacementList:
+      - position: {x: -100, y: 0}
         size: 100
         order: 6
-      - position: {x: 555, y: 222}
+      - position: {x: -200, y: 0}
         size: 100
         order: 7
-      - position: {x: 555, y: 111}
+      - position: {x: -300, y: 0}
         size: 100
+        order: 8
+      - position: {x: 666, y: 0}
+        size: 100
+        order: 8
+      - position: {x: 777, y: 0}
+        size: 100
+        order: 8
+      - position: {x: 888, y: 0}
+        size: 100
+        order: 8
+      - position: {x: 1111, y: 1111}
+        size: 100
+        order: 8
+      - position: {x: 1222, y: 1222}
+        size: 100
+        order: 8
+      - position: {x: 1333, y: 1333}
+        size: 100
+        order: 8
+      - position: {x: 900, y: 0}
+        size: 100
+        order: 8
+      - position: {x: 800, y: 0}
+        size: 100
+        order: 8
+      - position: {x: 850, y: 50}
+        size: 100
+        order: 8
+    - matchlingType: 4
+      MatchlingPlacementList:
+      - position: {x: -100, y: -333}
+        size: 100
+        order: 6
+      - position: {x: -200, y: -333}
+        size: 100
+        order: 7
+      - position: {x: -300, y: -333}
+        size: 222
+        order: 8
+      - position: {x: 666, y: -333}
+        size: 100
+        order: 8
+      - position: {x: 777, y: -333}
+        size: 222
+        order: 8
+      - position: {x: 888, y: -333}
+        size: 222
         order: 8
     matchGoalList:
     - matchlingType: 2
-      count: 3
+      count: 12
     - matchlingType: 3
-      count: 3
+      count: 9
   matchlingDataList:
   - matchlingType: 1
     sprite: {fileID: 21300000, guid: 8d6cbb612b3aada4d9856c317419a8fa, type: 3}
@@ -100,3 +266,7 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: b37f54633377a3343b4449e30e97651e, type: 3}
   - matchlingType: 3
     sprite: {fileID: 21300000, guid: 417dd2ad49e9e0d42a59dccf8f359fe2, type: 3}
+  - matchlingType: 4
+    sprite: {fileID: 21300000, guid: e96cca6665dcb2f45973056f91be8189, type: 3}
+  - matchlingType: 5
+    sprite: {fileID: 21300000, guid: 4bf6d673c0c8a2b4288b7c2ae208cc92, type: 3}

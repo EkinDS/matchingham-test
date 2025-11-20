@@ -12,6 +12,7 @@ public class MatchlingPresenter : MonoBehaviour
         _eventBus = eventBus;
         _matchlingView = GetComponent<MatchlingView>();
         _matchlingType = matchlingType;
+        name = matchlingType + "Matchling";
 
         _matchlingView.Initialize(this, matchlingPlacement, sprite);
     }

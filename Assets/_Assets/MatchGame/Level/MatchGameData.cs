@@ -67,4 +67,6 @@ public enum MatchlingType
     Tree = 1,
     House = 2,
     Car = 3,
+    Elephant = 4,
+    Rock = 5,
 }

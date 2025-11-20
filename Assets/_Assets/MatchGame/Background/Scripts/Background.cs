@@ -35,6 +35,8 @@ public class Background : MonoBehaviour, IDragHandler
     public void ResetForLevel(Sprite sprite)
     {
         _image.sprite = sprite;
+        
+        transform.localPosition = Vector3.zero;
 
     }
 
