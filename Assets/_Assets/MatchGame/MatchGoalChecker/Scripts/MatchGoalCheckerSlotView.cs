@@ -12,10 +12,11 @@ public class MatchGoalSlotView : MonoBehaviour
     
     public void ResetForLevel(Sprite sprite, MatchlingType matchlingType, int count)
     {
-        _countText.text = "x" + count;
         _goalImage.sprite = sprite;
-        _matchlingType  = matchlingType;
+        _matchlingType = matchlingType;
         _count = count;
+
+        _countText.text = "x" + _count;
     }
 
     public MatchlingType GetMatchlingType()
@@ -23,10 +24,9 @@ public class MatchGoalSlotView : MonoBehaviour
         return _matchlingType;
     }
 
-
     public void ReduceCount()
     {
         _count--;
-        _countText.text = "x"+ _count;
+        _countText.text = "x" + _count;
     }
 }

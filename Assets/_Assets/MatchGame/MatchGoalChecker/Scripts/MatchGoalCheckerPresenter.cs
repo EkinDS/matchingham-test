@@ -1,19 +1,17 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MatchGoalCheckerPresenter : MonoBehaviour
 {
-    [SerializeField] private List<MatchGoalSlotView> _matchGoalSlotViews;
-
     private EventBus _eventBus;
     private MatchGoalCheckerModel _matchGoalCheckerModel;
-    private SpriteService _spriteService;
+    private MatchGoalCheckerView _matchGoalCheckerView;
 
     public void Initialize(EventBus eventBus, SpriteService spriteService)
     {
         _eventBus = eventBus;
-        _spriteService = spriteService;
-
+        _matchGoalCheckerView = GetComponent<MatchGoalCheckerView>();
+        _matchGoalCheckerView.Initialize(spriteService);
+        
         _eventBus.Subscribe<MatchlingSelectedEvent>(HandleOnMatchlingSelected);
     }
 
@@ -32,41 +30,22 @@ public class MatchGoalCheckerPresenter : MonoBehaviour
             _matchGoalCheckerModel.MatchGoals.Add(newMatchGoal);
         }
 
-        for (int i = 0; i < _matchGoalSlotViews.Count; i++)
-        {
-            if (i < _matchGoalCheckerModel.MatchGoals.Count)
-            {
-                MatchGoal goal = _matchGoalCheckerModel.MatchGoals[i];
-
-                Sprite sprite = _spriteService.GetMatchlingSprite(goal.matchlingType);
-
-                _matchGoalSlotViews[i].gameObject.SetActive(true);
-                _matchGoalSlotViews[i].ResetForLevel(sprite, goal.matchlingType, goal.count);
-            }
-            else
-            {
-                _matchGoalSlotViews[i].gameObject.SetActive(false);
-            }
-        }
+        _matchGoalCheckerView.ResetForLevel(_matchGoalCheckerModel.MatchGoals);
     }
 
     private void HandleOnMatchlingSelected(MatchlingSelectedEvent e)
     {
+        var type = e.MatchlingPresenter.GetMatchlingType();
+
         foreach (var matchGoal in _matchGoalCheckerModel.MatchGoals)
         {
-            if (matchGoal.matchlingType == e.MatchlingPresenter.GetMatchlingType())
+            if (matchGoal.matchlingType == type)
             {
                 matchGoal.count--;
             }
         }
 
-        foreach (var matchGoalSlotView in _matchGoalSlotViews)
-        {
-            if (matchGoalSlotView.GetMatchlingType() == e.MatchlingPresenter.GetMatchlingType())
-            {
-                matchGoalSlotView.ReduceCount();
-            }
-        }
+        _matchGoalCheckerView.OnMatchlingSelected(type);
 
         if (AllMatchGoalsHaveBeenFulfilled())
         {

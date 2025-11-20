@@ -63,7 +63,7 @@ public class SpriteService : MonoBehaviour
             yield break;
         }
 
-        string key = backgroundType.ToString(); // Addressables key == enum name
+        string key = backgroundType.ToString();
 
         var handle = Addressables.LoadAssetAsync<Sprite>(key);
         yield return handle;
