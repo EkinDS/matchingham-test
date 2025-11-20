@@ -1,10 +1,5 @@
-using System;
 using System.Collections.Generic;
-using NUnit.Framework;
-using UnityEditor;
-using UnityEngine;
 
-[Serializable]
 public class CollectionModel
 {
     public readonly int CollectionCapacity = 7;

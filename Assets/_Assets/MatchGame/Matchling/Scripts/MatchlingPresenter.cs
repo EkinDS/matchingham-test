@@ -4,7 +4,6 @@ public class MatchlingPresenter : MonoBehaviour
 {
     private EventBus _eventBus;
     private MatchlingView _matchlingView;
-    private MatchlingModel _matchlingModel;
     private MatchlingType _matchlingType;
 
     public void Initialize(EventBus eventBus, MatchlingPlacement matchlingPlacement, MatchlingType matchlingType,
@@ -12,7 +11,6 @@ public class MatchlingPresenter : MonoBehaviour
     {
         _eventBus = eventBus;
         _matchlingView = GetComponent<MatchlingView>();
-        _matchlingModel = new MatchlingModel();
         _matchlingType = matchlingType;
 
         _matchlingView.Initialize(this, matchlingPlacement, sprite);
@@ -21,11 +19,6 @@ public class MatchlingPresenter : MonoBehaviour
     public void OnViewClicked()
     {
         _eventBus.Publish(new MatchlingSelectedEvent(this));
-    }
-
-    public void OnPlacedInCollection()
-    {
-        _eventBus.Publish(new MatchlingPlacedInCollectionEvent());
     }
 
     public MatchlingType GetMatchlingType()

@@ -120,8 +120,7 @@ public class MatchGameManager : MonoBehaviour
     {
         _levelFailedView.Appear();
     }
-
-
+    
     private void HandleOnTimeRanOutEvent(TimeRanOutEvent e)
     {
         _levelFailedView.Appear();

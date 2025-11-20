@@ -10,7 +10,6 @@ public class CollectionView : MonoBehaviour
 
     private List<MatchlingPresenter> _matchlingPresenters;
     private int _capacity;
-    private bool _isRearrangingMatchlings;
     private List<Tween> _tweens;
     private Coroutine _coroutine;
     private CollectionPresenter _collectionPresenter; //bunu eventle de halledebilirim
@@ -76,8 +75,6 @@ public class CollectionView : MonoBehaviour
 
     private IEnumerator RearrangeMatchlingPresentersOverTime(List<MatchlingPresenter> matchlingPresenters)
     {
-        _isRearrangingMatchlings = true;
-
         for (var i = 0; i < matchlingPresenters.Count; i++)
         {
             var matchlingPresenter = matchlingPresenters[i];
@@ -89,10 +86,7 @@ public class CollectionView : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.6F);
-
-        _isRearrangingMatchlings = false;
-
+        
         _collectionPresenter.MatchIfPossible();
-        //matchlingPresenter.OnPlacedInCollection();
     }
 }

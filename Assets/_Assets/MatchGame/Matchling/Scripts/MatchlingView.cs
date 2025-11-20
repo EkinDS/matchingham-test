@@ -26,10 +26,7 @@ public class MatchlingView : MonoBehaviour, IPointerClickHandler
 
         transform.SetParent(parent);
         _thisRectTransform.DOSizeDelta(new Vector2(size, size), 0.3F).SetEase(Ease.InBack);
-        transform.DOLocalMove(position, 0.5F).SetEase(Ease.InBack).OnComplete(() =>
-        {
-            _matchlingPresenter.OnPlacedInCollection();
-        });
+        transform.DOLocalMove(position, 0.5F).SetEase(Ease.InBack);
     }
 
     public void OnPointerClick(PointerEventData eventData)

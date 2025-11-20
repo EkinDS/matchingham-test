@@ -6,17 +6,16 @@ public class CollectionPresenter : MonoBehaviour
     private EventBus _eventBus;
     private CollectionView _collectionView;
     private CollectionModel _collectionModel;
-    
+
 
     public void Initialize(EventBus eventBus)
     {
         _eventBus = eventBus;
         _collectionView = GetComponent<CollectionView>();
-        
+
         _collectionView.Initialize();
 
         _eventBus.Subscribe<MatchlingSelectedEvent>(HandleOnMatchlingSelected);
-        _eventBus.Subscribe<MatchlingPlacedInCollectionEvent>(HandleOnMatchlingPlacedInCollection);
     }
 
     public void ResetForLevel()
@@ -48,21 +47,17 @@ public class CollectionPresenter : MonoBehaviour
         {
             return;
         }
-        
+
         if (_collectionModel.TryToAddMatchlingToCollection(e.MatchlingPresenter))
         {
             _collectionView.AddMatchlingPresenter(e.MatchlingPresenter);
-            
-            _collectionView.PlaceMatchling(e.MatchlingPresenter, _collectionModel.MatchlingPresenters.IndexOf(e.MatchlingPresenter));
+
+            _collectionView.PlaceMatchling(e.MatchlingPresenter,
+                _collectionModel.MatchlingPresenters.IndexOf(e.MatchlingPresenter));
             _collectionView.RearrangeMatchlingPresenters(_collectionModel.MatchlingPresenters);
         }
     }
 
-    private void HandleOnMatchlingPlacedInCollection(MatchlingPlacedInCollectionEvent e)
-    {
-        return;
-       
-    }
 
     private void Match(int matchCenterIndex)
     {
@@ -75,6 +70,5 @@ public class CollectionPresenter : MonoBehaviour
     private void OnDestroy()
     {
         _eventBus.Unsubscribe<MatchlingSelectedEvent>(HandleOnMatchlingSelected);
-        _eventBus.Unsubscribe<MatchlingPlacedInCollectionEvent>(HandleOnMatchlingPlacedInCollection);
     }
 }
