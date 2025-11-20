@@ -16,11 +16,6 @@ public class MatchGoalCheckerPresenter : MonoBehaviour
         _matchGameData = matchGameData;
         _spriteService = spriteService;
 
-        foreach (var slotView in _matchGoalSlotViews)
-        {
-            slotView.Initialize();
-        }
-
         _eventBus.Subscribe<MatchlingSelectedEvent>(HandleOnMatchlingSelected);
     }
 
@@ -39,14 +34,12 @@ public class MatchGoalCheckerPresenter : MonoBehaviour
             _matchGoalCheckerModel.MatchGoals.Add(newMatchGoal);
         }
 
-        // Setup UI slots
         for (int i = 0; i < _matchGoalSlotViews.Count; i++)
         {
             if (i < _matchGoalCheckerModel.MatchGoals.Count)
             {
                 MatchGoal goal = _matchGoalCheckerModel.MatchGoals[i];
 
-                // ✅ Get sprite from SpriteService (addressables-backed)
                 Sprite sprite = _spriteService.GetMatchlingSprite(goal.matchlingType);
 
                 _matchGoalSlotViews[i].gameObject.SetActive(true);
@@ -61,7 +54,6 @@ public class MatchGoalCheckerPresenter : MonoBehaviour
 
     private void HandleOnMatchlingSelected(MatchlingSelectedEvent e)
     {
-        // Update model counts
         foreach (var matchGoal in _matchGoalCheckerModel.MatchGoals)
         {
             if (matchGoal.matchlingType == e.MatchlingPresenter.GetMatchlingType())
@@ -70,7 +62,6 @@ public class MatchGoalCheckerPresenter : MonoBehaviour
             }
         }
 
-        // Update UI
         foreach (var matchGoalSlotView in _matchGoalSlotViews)
         {
             if (matchGoalSlotView.GetMatchlingType() == e.MatchlingPresenter.GetMatchlingType())
@@ -79,7 +70,6 @@ public class MatchGoalCheckerPresenter : MonoBehaviour
             }
         }
 
-        // Check completion
         if (AllMatchGoalsHaveBeenFulfilled())
         {
             _eventBus.Publish(new AllMatchGoalsFulfilledEvent());

@@ -53,11 +53,10 @@ public class CollectionView : MonoBehaviour
     public void Match(List<MatchlingPresenter> matchlingPresentersToMatch)
     {
         float matchPositionX = matchlingPresentersToMatch[1].transform.parent.localPosition.x;
-        float matchPositionY = matchlingPresentersToMatch[1].transform.parent.localPosition.y + 100F;
 
         foreach (var matchlingPresenter in matchlingPresentersToMatch)
         {
-            matchlingPresenter.Match(transform, matchPositionX, matchPositionY);
+            matchlingPresenter.Match(transform, matchPositionX);
 
             _matchlingPresenters.Remove(matchlingPresenter);
         }
@@ -85,7 +84,7 @@ public class CollectionView : MonoBehaviour
             _tweens.Add(newTween);
         }
 
-        yield return new WaitForSeconds(0.6F);
+        yield return new WaitForSeconds(0.5F);
         
         _collectionPresenter.MatchIfPossible();
     }
