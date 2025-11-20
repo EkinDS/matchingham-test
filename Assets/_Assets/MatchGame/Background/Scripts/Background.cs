@@ -21,7 +21,6 @@ public class Background : MonoBehaviour, IDragHandler
     private void Update()
     {
         HandlePinchZoom();
-        HandleMouseScrollZoom();
     }
 
     public void Initialize()
@@ -78,26 +77,6 @@ public class Background : MonoBehaviour, IDragHandler
         float currentDistance = Vector2.Distance(t0.position, t1.position);
         float factor = currentDistance / _initialPinchDistance;
         float newScale = Mathf.Clamp(_initialPinchScale.x * factor, minZoom, maxZoom);
-
-        _rectTransform.localScale = new Vector3(newScale, newScale, 1f);
-    }
-
-    private void HandleMouseScrollZoom()
-    {
-        if (Input.touchCount > 0)
-        {
-            return;
-        }
-
-        float scroll = Input.mouseScrollDelta.y;
-
-        if (Mathf.Abs(scroll) < 0.001f)
-        {
-            return;
-        }
-
-        float currentScale = _rectTransform.localScale.x;
-        float newScale = Mathf.Clamp(currentScale + scroll * mouseZoomSpeed, minZoom, maxZoom);
 
         _rectTransform.localScale = new Vector3(newScale, newScale, 1f);
     }
