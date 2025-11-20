@@ -12,6 +12,8 @@ public class CollectionPresenter : MonoBehaviour
     {
         _eventBus = eventBus;
         _collectionView = GetComponent<CollectionView>();
+        
+        _collectionView.Initialize();
 
         _eventBus.Subscribe<MatchlingSelectedEvent>(HandleOnMatchlingSelected);
         _eventBus.Subscribe<MatchlingPlacedInCollectionEvent>(HandleOnMatchlingPlacedInCollection);
@@ -20,18 +22,10 @@ public class CollectionPresenter : MonoBehaviour
     public void ResetForLevel()
     {
         _collectionModel = new CollectionModel();
+        _collectionView.ResetForLevel(_collectionModel.CollectionCapacity);
     }
 
-    private void HandleOnMatchlingSelected(MatchlingSelectedEvent e)
-    {
-        if (_collectionModel.TryToAddMatchlingToCollection(e.MatchlingPresenter))
-        {
-            _collectionView.PlaceMatchling(e.MatchlingPresenter, _collectionModel.MatchlingPresenters.IndexOf(e.MatchlingPresenter));
-            _collectionView.RearrangeMatchlingPresenters(_collectionModel.MatchlingPresenters);
-        }
-    }
-
-    private void HandleOnMatchlingPlacedInCollection(MatchlingPlacedInCollectionEvent e)
+    public void MatchIfPossible()
     {
         int matchCenterIndex = _collectionModel.GetMatchCenterIndex();
 
@@ -46,6 +40,28 @@ public class CollectionPresenter : MonoBehaviour
                 _eventBus.Publish(new CollectionFilledEvent());
             }
         }
+    }
+
+    private void HandleOnMatchlingSelected(MatchlingSelectedEvent e)
+    {
+        if (!_collectionView.HasSpace())
+        {
+            return;
+        }
+        
+        if (_collectionModel.TryToAddMatchlingToCollection(e.MatchlingPresenter))
+        {
+            _collectionView.AddMatchlingPresenter(e.MatchlingPresenter);
+            
+            _collectionView.PlaceMatchling(e.MatchlingPresenter, _collectionModel.MatchlingPresenters.IndexOf(e.MatchlingPresenter));
+            _collectionView.RearrangeMatchlingPresenters(_collectionModel.MatchlingPresenters);
+        }
+    }
+
+    private void HandleOnMatchlingPlacedInCollection(MatchlingPlacedInCollectionEvent e)
+    {
+        return;
+       
     }
 
     private void Match(int matchCenterIndex)

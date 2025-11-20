@@ -20,12 +20,7 @@ public class MatchlingPresenter : MonoBehaviour
 
     public void OnViewClicked()
     {
-        if (!_matchlingModel.IsSelected)
-        {
-            _matchlingModel.IsSelected = true;
-
-            _eventBus.Publish(new MatchlingSelectedEvent(this));
-        }
+        _eventBus.Publish(new MatchlingSelectedEvent(this));
     }
 
     public void OnPlacedInCollection()
@@ -45,6 +40,6 @@ public class MatchlingPresenter : MonoBehaviour
 
     public void Match(Transform parent, float matchPositionX, float matchPositionY)
     {
-        _matchlingView.Match(parent, matchPositionX, matchPositionY, _eventBus );
+        _matchlingView.Match(parent, matchPositionX, matchPositionY, _eventBus);
     }
 }

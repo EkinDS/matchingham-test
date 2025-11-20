@@ -22,6 +22,8 @@ public class MatchlingView : MonoBehaviour, IPointerClickHandler
 
     public void MoveToCollectionArea(Transform parent, Vector2 position, float size)
     {
+        _thisImage.raycastTarget = false;
+
         transform.SetParent(parent);
         _thisRectTransform.DOSizeDelta(new Vector2(size, size), 0.3F).SetEase(Ease.InBack);
         transform.DOLocalMove(position, 0.5F).SetEase(Ease.InBack).OnComplete(() =>
@@ -32,8 +34,6 @@ public class MatchlingView : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        _thisImage.raycastTarget = false;
-        
         _matchlingPresenter.OnViewClicked();
     }
 
