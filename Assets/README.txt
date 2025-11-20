@@ -9,7 +9,7 @@ What I did:
 different classes can interact with what is going on throughout the project.
 -I added an infinite level loop
 -You can zoom in, zoom out and drag the map, giving you access to different parts of it.
--U used Assembly Definitions to separate systems, increasing build and compilation time.
+-I used Assembly Definitions to separate systems, increasing build and compilation time.
 -Tweens were used for some animations.
 -There is a goal system which shows the requirements of the level.
 -There is a collection system which shows the current matchlings in your collection slots.
