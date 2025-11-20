@@ -22,10 +22,14 @@ public class SpriteService : MonoBehaviour
         foreach (var type in typesToLoad)
         {
             if (type == MatchlingType.None)
+            {
                 continue;
+            }
 
             if (_loadedMatchlings.ContainsKey(type))
+            {
                 continue;
+            }
 
             string key = type.ToString();
 
@@ -50,10 +54,14 @@ public class SpriteService : MonoBehaviour
     public IEnumerator LoadBackgroundSprite(BackgroundType backgroundType)
     {
         if (backgroundType == BackgroundType.None)
+        {
             yield break;
+        }
 
         if (_loadedBackgrounds.ContainsKey(backgroundType))
+        {
             yield break;
+        }
 
         string key = backgroundType.ToString(); // Addressables key == enum name
 
@@ -87,7 +95,9 @@ public class SpriteService : MonoBehaviour
     public Sprite GetBackgroundSprite(BackgroundType type)
     {
         if (type == BackgroundType.None)
+        {
             return null;
+        }
 
         if (_loadedBackgrounds.TryGetValue(type, out var data))
         {

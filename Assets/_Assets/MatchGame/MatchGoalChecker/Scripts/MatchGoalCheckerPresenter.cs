@@ -7,13 +7,11 @@ public class MatchGoalCheckerPresenter : MonoBehaviour
 
     private EventBus _eventBus;
     private MatchGoalCheckerModel _matchGoalCheckerModel;
-    private MatchGameData _matchGameData;
     private SpriteService _spriteService;
 
-    public void Initialize(EventBus eventBus, MatchGameData matchGameData, SpriteService spriteService)
+    public void Initialize(EventBus eventBus, SpriteService spriteService)
     {
         _eventBus = eventBus;
-        _matchGameData = matchGameData;
         _spriteService = spriteService;
 
         _eventBus.Subscribe<MatchlingSelectedEvent>(HandleOnMatchlingSelected);

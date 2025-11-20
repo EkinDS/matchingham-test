@@ -31,7 +31,7 @@ public class MatchGameManager : MonoBehaviour
         _levelCompletedView.Initialize(_eventBus);
         _levelFailedView.Initialize(_eventBus);
         _levelTimerPresenter.Initialize(_eventBus);
-        _matchGoalCheckerPresenter.Initialize(_eventBus, _matchGameData, _spriteService);
+        _matchGoalCheckerPresenter.Initialize(_eventBus, _spriteService);
         _background.Initialize();
 
         _eventBus.Subscribe<NextLevelRequestedEvent>(HandleOnNextLevelRequested);
@@ -97,7 +97,7 @@ public class MatchGameManager : MonoBehaviour
             }
         }
 
-        _levelTimerPresenter.StartTimer(levelData.timeLimit);
+        _levelTimerPresenter.StartTimer(levelData.timeLimit, currentLevelId);
 
         yield return StartCoroutine(_spriteService.LoadMatchlingSprites(typesNeeded));
         yield return StartCoroutine(_spriteService.LoadBackgroundSprite(levelData.backgroundType));
@@ -175,14 +175,11 @@ public class MatchGameManager : MonoBehaviour
 
     private void HandleOnCollectionFilledEvent(CollectionFilledEvent e)
     {
-        print("fill");
-
         _levelFailedView.Appear();
     }
 
     private void HandleOnTimeRanOutEvent(TimeRanOutEvent e)
     {
-        print("time");
         _levelFailedView.Appear();
     }
 

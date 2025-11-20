@@ -19,8 +19,10 @@ public class LevelTimerPresenter : MonoBehaviour
 
     }
 
-    public void StartTimer(float timeLimit)
+    public void StartTimer(float timeLimit, int level)
     {
+        _levelTimerView.SetLevelText(level);
+        
         _isFrozen = false;
         _timeLimit = timeLimit;
     }
