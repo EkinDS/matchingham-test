@@ -37,13 +37,14 @@ public class MatchlingView : MonoBehaviour, IPointerClickHandler
         _matchlingPresenter.OnViewClicked();
     }
 
-    public void Match(Transform parent, float matchPositionX, float matchPositionY)
+    public void Match(Transform parent, float matchPositionX, float matchPositionY, EventBus eventBus)
     {
         transform.SetParent(parent);
 
         transform.DOLocalMoveX(matchPositionX, 0.25F).SetEase(Ease.InSine);
         transform.DOLocalMoveY(matchPositionY, 0.3F).SetEase(Ease.OutSine).OnComplete(() =>
         {
+            eventBus.Publish(new MatchCompletedEvent(_matchlingPresenter));
             Destroy(gameObject);
         });
     }

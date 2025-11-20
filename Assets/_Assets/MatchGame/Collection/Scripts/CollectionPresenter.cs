@@ -6,6 +6,7 @@ public class CollectionPresenter : MonoBehaviour
     private EventBus _eventBus;
     private CollectionView _collectionView;
     private CollectionModel _collectionModel;
+    
 
     public void Initialize(EventBus eventBus)
     {
@@ -25,20 +26,8 @@ public class CollectionPresenter : MonoBehaviour
     {
         if (_collectionModel.TryToAddMatchlingToCollection(e.MatchlingPresenter))
         {
-            int matchCenterIndex = _collectionModel.GetMatchCenterIndex();
-
-            if (matchCenterIndex != -1)
-            {
-                List<MatchlingPresenter> matchlingPresentersToMatch = _collectionModel.Match(matchCenterIndex);
-
-                _collectionView.Match(matchlingPresentersToMatch);
-                _collectionView.RearrangeMatchlingPresenters(_collectionModel.MatchlingPresenters);
-            }
-            else
-            {
-                _collectionView.PlaceMatchling(e.MatchlingPresenter, _collectionModel.MatchlingPresenters.IndexOf(e.MatchlingPresenter));
-                //_collectionView.RearrangeMatchlingPresenters(_collectionModel.MatchlingPresenters);
-            }
+            _collectionView.PlaceMatchling(e.MatchlingPresenter, _collectionModel.MatchlingPresenters.IndexOf(e.MatchlingPresenter));
+            _collectionView.RearrangeMatchlingPresenters(_collectionModel.MatchlingPresenters);
         }
     }
 
@@ -50,20 +39,21 @@ public class CollectionPresenter : MonoBehaviour
         {
             Match(matchCenterIndex);
         }
-        
-        if (_collectionModel.MatchlingPresenters.Count >= _collectionModel.CollectionCapacity)
+        else
         {
-            _eventBus.Publish(new CollectionFilledEvent());
+            if (_collectionModel.MatchlingPresenters.Count >= _collectionModel.CollectionCapacity)
+            {
+                _eventBus.Publish(new CollectionFilledEvent());
+            }
         }
     }
 
     private void Match(int matchCenterIndex)
     {
-        return;
-        //_collectionView.Match(matchlingPresentersToMatch);
+        List<MatchlingPresenter> matchlingPresentersToMatch = _collectionModel.Match(matchCenterIndex);
 
-
-        //_collectionView.RearrangeMatchlingPresenters(_collectionModel.MatchlingPresenters);
+        _collectionView.Match(matchlingPresentersToMatch);
+        _collectionView.RearrangeMatchlingPresenters(_collectionModel.MatchlingPresenters);
     }
 
     private void OnDestroy()

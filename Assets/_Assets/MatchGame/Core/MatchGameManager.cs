@@ -15,6 +15,7 @@ public class MatchGameManager : MonoBehaviour
 
     private EventBus _eventBus;
     private List<MatchlingPresenter> _matchlingPresenters;
+    private bool readyToFinishLevel;
 
 
     private void Awake()
@@ -33,6 +34,7 @@ public class MatchGameManager : MonoBehaviour
         _eventBus.Subscribe<CollectionFilledEvent>(HandleOnCollectionFilledEvent);
         _eventBus.Subscribe<AllMatchGoalsFulfilledEvent>(HandleOnAllMatchGoalsFulfilled);
         _eventBus.Subscribe<TimeRanOutEvent>(HandleOnTimeRanOutEvent);
+        _eventBus.Subscribe<MatchCompletedEvent>(HandleOnMatchCompletedEvent);
 
         ResetGame();
         LoadGame();
@@ -40,6 +42,8 @@ public class MatchGameManager : MonoBehaviour
 
     private void ResetGame()
     {
+        readyToFinishLevel = false;
+
         if (_matchlingPresenters != null)
         {
             foreach (var matchlingPresenter in _matchlingPresenters)
@@ -90,10 +94,25 @@ public class MatchGameManager : MonoBehaviour
 
     private void HandleOnAllMatchGoalsFulfilled(AllMatchGoalsFulfilledEvent e)
     {
+        if (readyToFinishLevel)
+        {
+            return;
+        }
+        
+        readyToFinishLevel = true;
+        
         _levelTimerPresenter.StopTimer();
 
         PlayerPrefs.SetInt("CurrentLevelId", PlayerPrefs.GetInt("CurrentLevelId", 0) + 1);
+    }
 
+    private void HandleOnMatchCompletedEvent(MatchCompletedEvent e)
+    {
+        if (!readyToFinishLevel)
+        {
+            return;
+        }
+        
         _levelCompletedView.Appear(_levelTimerPresenter.GetTimeLimit());
     }
 
@@ -114,5 +133,7 @@ public class MatchGameManager : MonoBehaviour
         _eventBus.Unsubscribe<AllMatchGoalsFulfilledEvent>(HandleOnAllMatchGoalsFulfilled);
         _eventBus.Unsubscribe<CollectionFilledEvent>(HandleOnCollectionFilledEvent);
         _eventBus.Unsubscribe<TimeRanOutEvent>(HandleOnTimeRanOutEvent);
+        _eventBus.Unsubscribe<MatchCompletedEvent>(HandleOnMatchCompletedEvent);
+
     }
 }
